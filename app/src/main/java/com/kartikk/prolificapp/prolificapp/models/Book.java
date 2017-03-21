@@ -1,5 +1,6 @@
 package com.kartikk.prolificapp.prolificapp.models;
 
+
 /**
  * Created by Kartikk on 3/21/2017.
  */
@@ -67,5 +68,18 @@ public class Book {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id='" + id + '\'' +
+                ", author='" + author + '\'' +
+                ", title='" + title + '\'' +
+                ", lastCheckedOut='" + lastCheckedOut + '\'' +
+                ", lastCheckedOutBy='" + lastCheckedOutBy + '\'' +
+                ", categories='" + categories + '\'' +
+                ", url='" + url + '\'' +
+                '}';
     }
 }
