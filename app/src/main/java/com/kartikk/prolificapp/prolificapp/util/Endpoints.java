@@ -13,7 +13,7 @@ import retrofit2.http.GET;
 
 public interface Endpoints {
 
-    @GET("/58c954f8942167000a8f77e4/books")
-    Call<List<Book>> getBooks1();
+    @GET(Constants.urlPart1 + "/books")
+    Call<List<Book>> getBooks();
 
 }

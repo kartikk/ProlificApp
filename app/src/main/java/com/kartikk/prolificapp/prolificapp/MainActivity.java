@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         recyclerView = activityMainBinding.booksRecyclerView;
-        Call<List<Book>> call = Helper.getRetrofitEndpoints().getBooks1();
+        Call<List<Book>> call = Helper.getRetrofitEndpoints().getBooks();
         // TODO handle network issues better
         call.enqueue(new Callback<List<Book>>() {
             @Override
@@ -39,12 +39,12 @@ public class MainActivity extends AppCompatActivity {
                 recyclerView.setAdapter(booksRecyclerAdapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 recyclerView.setVisibility(View.VISIBLE);
-                Log.d(TAG, "Get books success"+ response.body());
+                Log.d(TAG, "Get books success" + response.body());
             }
 
             @Override
             public void onFailure(Call<List<Book>> call, Throwable t) {
-                Log.d(TAG, "Get books failed"+ t.getMessage());
+                Log.d(TAG, "Get books failed" + t.getMessage());
             }
         });
     }
