@@ -6,7 +6,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 
-import java.util.Objects;
+import java.util.Date;
 
 /**
  * Created by Kartikk on 3/21/2017.
@@ -21,7 +21,7 @@ public class Book implements Parcelable {
     @Expose
     private String title;
     @Expose
-    private String lastCheckedOut;
+    private Date lastCheckedOut;
     @Expose
     private String lastCheckedOutBy;
     @Expose
@@ -63,11 +63,11 @@ public class Book implements Parcelable {
         this.title = title;
     }
 
-    public String getLastCheckedOut() {
+    public Date getLastCheckedOut() {
         return lastCheckedOut;
     }
 
-    public void setLastCheckedOut(String lastCheckedOut) {
+    public void setLastCheckedOut(Date lastCheckedOut) {
         this.lastCheckedOut = lastCheckedOut;
     }
 
@@ -101,7 +101,7 @@ public class Book implements Parcelable {
                 "id='" + id + '\'' +
                 ", author='" + author + '\'' +
                 ", title='" + title + '\'' +
-                ", lastCheckedOut='" + lastCheckedOut + '\'' +
+                ", lastCheckedOut=" + lastCheckedOut +
                 ", lastCheckedOutBy='" + lastCheckedOutBy + '\'' +
                 ", categories='" + categories + '\'' +
                 ", url='" + url + '\'' +
@@ -119,7 +119,7 @@ public class Book implements Parcelable {
         parcel.writeString(id);
         parcel.writeString(author);
         parcel.writeString(title);
-        parcel.writeString(lastCheckedOut);
+        parcel.writeValue(lastCheckedOut);
         parcel.writeString(lastCheckedOutBy);
         parcel.writeString(categories);
         parcel.writeString(url);
@@ -130,7 +130,7 @@ public class Book implements Parcelable {
         id = in.readString();
         author = in.readString();
         title = in.readString();
-        lastCheckedOut = in.readString();
+        lastCheckedOut = (Date) in.readValue(Date.class.getClassLoader());
         lastCheckedOutBy = in.readString();
         categories = in.readString();
         url = in.readString();

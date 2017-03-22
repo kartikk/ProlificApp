@@ -17,7 +17,7 @@ public class Helper {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder().baseUrl(Constants.baseURL)
                     .addConverterFactory(GsonConverterFactory
-                            .create((new GsonBuilder()).create())).build();
+                            .create(new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create())).build();
         }
         return retrofit;
     }

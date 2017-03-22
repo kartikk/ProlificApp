@@ -19,10 +19,8 @@ import com.kartikk.prolificapp.prolificapp.util.Constants;
 import com.kartikk.prolificapp.prolificapp.util.Helper;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.util.Calendar;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -80,21 +78,13 @@ public class BookDetailActivity extends AppCompatActivity {
                 bookDetailBinding.bookLastCheckedOut.setVisibility(View.VISIBLE);
             }
             if (book.isCheckedOutValid()) {
-                String newDateText = "";
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                try {
-                    Date date = dateFormat.parse(book.getLastCheckedOut());
-                    DateFormat newDateFormat = new SimpleDateFormat("MMMM d, yyyy h:mm:ss a", getResources().getConfiguration().locale);
-                    newDateText = newDateFormat.format(date);
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                DateFormat newDateFormat = new SimpleDateFormat("MMMM d, yyyy h:mm:ss a", getResources().getConfiguration().locale);
+                newDateFormat.setTimeZone(Calendar.getInstance().getTimeZone());
+                String newDateText = newDateFormat.format(book.getLastCheckedOut());
+                if (book.isCheckedOutByValid()) {
+                    return getString(R.string.book_checked_out) + " " + book.getLastCheckedOutBy() + " @ " + newDateText;
                 }
-                if (newDateText != "") {
-                    if (book.isCheckedOutByValid()) {
-                        return getString(R.string.book_checked_out) + " " + book.getLastCheckedOutBy() + " @ " + newDateText;
-                    }
-                    return getString(R.string.book_checked_out) + " " + newDateText;
-                }
+                return getString(R.string.book_checked_out) + " " + newDateText;
             }
             if (book.isCheckedOutByValid())
                 return getString(R.string.book_checked_out) + " " + book.getLastCheckedOutBy();
