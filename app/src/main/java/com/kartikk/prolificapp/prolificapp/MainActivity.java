@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
                             if (activityMainBinding != null) {
                                 Snackbar.make(activityMainBinding.mainActivityLinearLayout, R.string.delete_all_success, Snackbar.LENGTH_LONG).show();
                             }
+                            updateRecyclerView();
                         } else {
                             if (activityMainBinding != null) {
                                 Snackbar.make(activityMainBinding.mainActivityLinearLayout, R.string.delete_all_fail, Snackbar.LENGTH_LONG).show();
@@ -88,9 +89,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    private void updateRecyclerView() {
         Call<List<Book>> call = Helper.getRetrofitEndpoints().getBooks();
         call.enqueue(new Callback<List<Book>>() {
             @Override
@@ -123,5 +122,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateRecyclerView();
     }
 }
