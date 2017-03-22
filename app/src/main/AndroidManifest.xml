@@ -29,6 +29,9 @@
             android:name=".AddBookActivity"
             android:label="@string/add_book_activity_title"
             android:windowSoftInputMode="adjustPan" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="f0967cf7e9ea2ff16175249fb6bd587e1d50f910" />
     </application>
 
 </manifest>

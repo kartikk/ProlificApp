@@ -11,10 +11,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.crashlytics.android.Crashlytics;
 import com.kartikk.prolificapp.prolificapp.databinding.ActivityMainBinding;
 import com.kartikk.prolificapp.prolificapp.models.Book;
 import com.kartikk.prolificapp.prolificapp.util.Helper;
 
+import io.fabric.sdk.android.Fabric;
 import java.util.List;
 
 import retrofit2.Call;
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         recyclerView = activityMainBinding.booksRecyclerView;
 
