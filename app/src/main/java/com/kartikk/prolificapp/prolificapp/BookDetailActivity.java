@@ -6,12 +6,21 @@ import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.kartikk.prolificapp.prolificapp.databinding.ActivityBookDetailBinding;
 import com.kartikk.prolificapp.prolificapp.models.Book;
+import com.kartikk.prolificapp.prolificapp.models.Checkout;
 import com.kartikk.prolificapp.prolificapp.util.Constants;
+import com.kartikk.prolificapp.prolificapp.util.Helper;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Kartikk on 3/21/2017.
@@ -23,6 +32,11 @@ public class BookDetailActivity extends AppCompatActivity {
     ShareActionProvider shareActionProvider;
     Book book;
 
+    private static final String TAG = BookDetailActivity.class.getSimpleName();
+
+    // Hardcoded since we don't have a registration page
+    private static final String userName = "Kartikk";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,17 +46,43 @@ public class BookDetailActivity extends AppCompatActivity {
         bookDetailBinding.executePendingBindings();
         bookDetailBinding.bookLastCheckedOut.setText(getCheckedOutStatusString());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        bookDetailBinding.bookCheckoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Call<Void> call = Helper.getRetrofitEndpoints().checkoutBook(book.getId(), new Checkout(userName));
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        Log.d(TAG, "Checkout success, response: " + response);
+                        Toast.makeText(getApplicationContext(), getString(R.string.checkout_success), Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Log.d(TAG, "Checkout failed, message: " + t.getMessage());
+                        Toast.makeText(getApplicationContext(), getString(R.string.checkout_failed), Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        });
     }
 
     public String getCheckedOutStatusString() {
         // TODO return date in the correct format
         if (book != null) {
+            if (bookDetailBinding != null) {
+                bookDetailBinding.bookLastCheckedOut.setVisibility(View.VISIBLE);
+            }
             if (book.isCheckedOutByValid() && book.isCheckedOutValid())
                 return getString(R.string.book_checked_out) + " " + book.getLastCheckedOutBy() + " @ " + book.getLastCheckedOut();
             else if (book.isCheckedOutByValid())
                 return getString(R.string.book_checked_out) + " " + book.getLastCheckedOutBy();
-            else
+            else if (book.isCheckedOutValid())
                 return getString(R.string.book_checked_out) + " " + book.getLastCheckedOut();
+        }
+        if (bookDetailBinding != null) {
+            bookDetailBinding.bookLastCheckedOut.setVisibility(View.GONE);
         }
         return "";
     }

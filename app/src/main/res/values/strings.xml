@@ -22,4 +22,6 @@
     <string name="menu_done">Done</string>
     <string name="main_context_delete">Delete</string>
     <string name="main_context_title">Action</string>
+    <string name="checkout_success">Checkout success</string>
+    <string name="checkout_failed">Checkout failed</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.kartikk.prolificapp.prolificapp.util;
 
 import com.kartikk.prolificapp.prolificapp.models.Book;
+import com.kartikk.prolificapp.prolificapp.models.Checkout;
 import com.kartikk.prolificapp.prolificapp.models.UpdateBook;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 /**
@@ -23,6 +25,9 @@ public interface Endpoints {
 
     @POST(Constants.urlPart1 + "/books")
     Call<Void> postBook(@Body UpdateBook updateBook);
+
+    @PUT(Constants.urlPart1 + "/books/{id}/")
+    Call<Void> checkoutBook(@Path("id") String id, @Body Checkout checkout);
 
     @DELETE(Constants.urlPart1 + "/books/{id}/")
     Call<Void> deleteBook(@Path("id") String id);
