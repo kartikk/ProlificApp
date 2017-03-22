@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.kartikk.prolificapp.prolificapp.databinding.ActivityMainBinding;
@@ -24,6 +26,12 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     BooksRecyclerAdapter booksRecyclerAdapter;
     static final String TAG = MainActivity.class.getSimpleName();
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,5 +55,16 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "Get books failed" + t.getMessage());
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_add:
+                return true;
+            case R.id.menu_seed:
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

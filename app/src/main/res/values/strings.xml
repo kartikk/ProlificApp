@@ -3,4 +3,6 @@
     <string name="book_tag">Tag:</string>
     <string name="book_checked_out">Last Checked Out:</string>
     <string name="book_checkout">Checkout</string>
+    <string name="menu_main_add">Add</string>
+    <string name="menu_main_seed">Seed</string>
 </resources>
