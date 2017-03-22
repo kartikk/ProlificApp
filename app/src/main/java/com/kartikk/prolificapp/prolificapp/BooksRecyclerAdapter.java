@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.kartikk.prolificapp.prolificapp.databinding.CardBookBinding;
 import com.kartikk.prolificapp.prolificapp.models.Book;
@@ -34,13 +34,15 @@ public class BooksRecyclerAdapter extends RecyclerView.Adapter<BooksRecyclerAdap
 
     private List<Book> bookList;
     static String TAG = BooksRecyclerAdapter.class.getSimpleName();
+    Context parentContext;
 
     public void setBookList(List<Book> bookList) {
         this.bookList = new ArrayList<>(bookList);
     }
 
-    public BooksRecyclerAdapter(List<Book> bookList) {
+    public BooksRecyclerAdapter(List<Book> bookList, Context context) {
         this.bookList = new ArrayList<>(bookList);
+        parentContext = context;
     }
 
     @Override
@@ -91,17 +93,27 @@ public class BooksRecyclerAdapter extends RecyclerView.Adapter<BooksRecyclerAdap
                                 public void onResponse(Call<Void> call, Response<Void> response) {
                                     if (response.isSuccessful() && response.code() == 204) {
                                         Log.d(TAG, "Book deletion success, response: " + response.body());
-                                        Toast.makeText(context, R.string.delete_book_success, Toast.LENGTH_LONG).show();
+                                        if (parentContext != null) {
+                                            MainActivity mainActivity = (MainActivity) parentContext;
+                                            mainActivity.updateRecyclerView();
+                                            Snackbar.make(mainActivity.activityMainBinding.mainActivityLinearLayout, R.string.delete_book_success, Snackbar.LENGTH_LONG).show();
+                                        }
                                     } else {
                                         Log.d(TAG, "Invalid response for delete book, response: " + response);
-                                        Toast.makeText(context, R.string.delete_book_failed, Toast.LENGTH_LONG).show();
+                                        if (parentContext != null) {
+                                            MainActivity mainActivity = (MainActivity) parentContext;
+                                            Snackbar.make(mainActivity.activityMainBinding.mainActivityLinearLayout, R.string.delete_book_failed, Snackbar.LENGTH_LONG).show();
+                                        }
                                     }
                                 }
 
                                 @Override
                                 public void onFailure(Call<Void> call, Throwable t) {
                                     Log.d(TAG, "Book deletion failed, message: " + t.getMessage());
-                                    Toast.makeText(context, R.string.delete_book_failed, Toast.LENGTH_LONG).show();
+                                    if (parentContext != null) {
+                                        MainActivity mainActivity = (MainActivity) parentContext;
+                                        Snackbar.make(mainActivity.activityMainBinding.mainActivityLinearLayout, R.string.delete_book_failed, Snackbar.LENGTH_LONG).show();
+                                    }
                                 }
                             });
                         }

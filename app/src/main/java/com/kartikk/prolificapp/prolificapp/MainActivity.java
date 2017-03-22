@@ -1,5 +1,6 @@
 package com.kartikk.prolificapp.prolificapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.design.widget.Snackbar;
@@ -27,11 +28,12 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    ActivityMainBinding activityMainBinding;
+    public ActivityMainBinding activityMainBinding;
     RecyclerView recyclerView;
     BooksRecyclerAdapter booksRecyclerAdapter;
     LinearLayoutManager linearLayoutManager;
     static final String TAG = MainActivity.class.getSimpleName();
+    Context context;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
+        context = this;
         activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         recyclerView = activityMainBinding.booksRecyclerView;
 
@@ -89,14 +92,14 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void updateRecyclerView() {
+    public void updateRecyclerView() {
         Call<List<Book>> call = Helper.getRetrofitEndpoints().getBooks();
         call.enqueue(new Callback<List<Book>>() {
             @Override
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
                 if (response.isSuccessful() && response.code() == 200) {
                     if (booksRecyclerAdapter == null) {
-                        booksRecyclerAdapter = new BooksRecyclerAdapter(response.body());
+                        booksRecyclerAdapter = new BooksRecyclerAdapter(response.body(), context);
                         recyclerView.setAdapter(booksRecyclerAdapter);
                     } else {
                         booksRecyclerAdapter.setBookList(response.body());
