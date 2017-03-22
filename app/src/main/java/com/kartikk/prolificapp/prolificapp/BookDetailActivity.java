@@ -22,5 +22,16 @@ public class BookDetailActivity extends AppCompatActivity {
         bookDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_book_detail);
         bookDetailBinding.setData(book);
         bookDetailBinding.executePendingBindings();
+        bookDetailBinding.bookLastCheckedOut.setText(getCheckedOutStatusString(book));
+    }
+
+    public String getCheckedOutStatusString(Book book) {
+        // TODO return date in the correct format
+        if (book.isCheckedOutByValid() && book.isCheckedOutValid())
+            return getString(R.string.book_checked_out) + " " + book.getLastCheckedOutBy() + " @ " + book.getLastCheckedOut();
+        else if (book.isCheckedOutByValid())
+            return getString(R.string.book_checked_out) + " " + book.getLastCheckedOutBy();
+        else
+            return getString(R.string.book_checked_out) + " " + book.getLastCheckedOut();
     }
 }

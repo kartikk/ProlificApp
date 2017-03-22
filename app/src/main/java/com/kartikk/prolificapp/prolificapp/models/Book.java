@@ -137,12 +137,40 @@ public class Book implements Parcelable {
         publisher = in.readString();
     }
 
+    public Boolean isIDValid() {
+        return id != "null";
+    }
+
+    public Boolean isCheckedOutAndCheckedOutByValid() {
+        return isCheckedOutByValid() && isCheckedOutValid();
+    }
+
+    public Boolean isCheckedOutByValid() {
+        return lastCheckedOutBy != "null";
+    }
+
     public Boolean isCheckedOutValid() {
-        return  !((lastCheckedOutBy == "null") && (lastCheckedOut == "null"));
+        return lastCheckedOut != "null";
     }
 
     public Boolean isPublisherValid() {
-        return publisher!="null";
+        return publisher != "null";
+    }
+
+    public Boolean isTitleValid() {
+        return title != "null";
+    }
+
+    public Boolean isCategoriesValid() {
+        return categories != "null";
+    }
+
+    public Boolean isURLValid() {
+        return url != "null";
+    }
+
+    public Boolean isAuthorValid() {
+        return author != "null";
     }
 
     public static final Parcelable.Creator<Book> CREATOR = new Parcelable.Creator<Book>() {

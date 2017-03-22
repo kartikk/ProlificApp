@@ -25,6 +25,7 @@
             android:textColor="@color/black"
             android:textSize="24sp"
             android:transitionName="bookTitle"
+            android:visibility="@{safeUnbox(data.isTitleValid())? View.VISIBLE : View.GONE}"
             tools:targetApi="lollipop" />
 
         <TextView
@@ -32,27 +33,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{data.author}"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:visibility="@{ safeUnbox(data.isAuthorValid())? View.VISIBLE : View.GONE}" />
 
         <TextView
             android:id="@+id/bookPublisher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{data.publisher}"
-            android:visibility="@{data.isPublisherValid()? View.VISIBLE : View.GONE}" />
+            android:visibility="@{ safeUnbox(data.isPublisherValid())? View.VISIBLE : View.GONE}" />
 
         <TextView
             android:id="@+id/bookCategories"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{@string/book_tag + ' ' + data.categories}" />
+            android:text="@{@string/book_tag + ' ' + data.categories}"
+            android:visibility="@{ safeUnbox(data.isCategoriesValid())? View.VISIBLE : View.GONE}" />
 
         <TextView
             android:id="@+id/bookLastCheckedOut"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{@string/book_checked_out + ' ' + data.lastCheckedOutBy + ' '+ '@' + ' ' + data.lastCheckedOut}"
-            android:visibility="@{ data.isCheckedOutValid()? View.GONE : View.VISIBLE}" />
+            android:visibility="@{ safeUnbox(data.isCheckedOutAndCheckedOutByValid())? View.GONE : View.VISIBLE}" />
 
         <Button
             android:id="@+id/bookCheckoutButton"
