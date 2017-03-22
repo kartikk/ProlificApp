@@ -4,8 +4,6 @@ package com.kartikk.prolificapp.prolificapp.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.annotations.Expose;
-
 import java.util.Date;
 
 /**
@@ -14,21 +12,13 @@ import java.util.Date;
 
 public class Book implements Parcelable {
 
-    @Expose
     private String id;
-    @Expose
     private String author;
-    @Expose
     private String title;
-    @Expose
     private Date lastCheckedOut;
-    @Expose
     private String lastCheckedOutBy;
-    @Expose
     private String categories;
-    @Expose
     private String url;
-    @Expose
     private String publisher;
 
     public String getPublisher() {
