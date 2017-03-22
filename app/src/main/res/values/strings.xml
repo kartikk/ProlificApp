@@ -5,4 +5,18 @@
     <string name="book_checkout">Checkout</string>
     <string name="menu_main_add">Add</string>
     <string name="menu_main_seed">Seed</string>
+    <string name="main_activity_title">Books</string>
+    <string name="detail_activity_title">Detail</string>
+    <string name="add_book_activity_title">Add book</string>
+    <string name="title_hint">Book Title</string>
+    <string name="author_hint">Author</string>
+    <string name="publisher_hint">Publisher</string>
+    <string name="categories_hint">Categories</string>
+    <string name="title_error">Title required</string>
+    <string name="author_error">Author required</string>
+    <string name="publisher_error">Publisher required</string>
+    <string name="categories_error">Categories required</string>
+    <string name="submit_button_text">Submit</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_done">Done</string>
 </resources>

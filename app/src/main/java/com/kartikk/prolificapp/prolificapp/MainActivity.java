@@ -1,5 +1,6 @@
 package com.kartikk.prolificapp.prolificapp;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -61,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_add:
+                Intent addIntent = new Intent(this, AddBookActivity.class);
+                startActivity(addIntent);
                 return true;
             case R.id.menu_seed:
                 return true;

@@ -11,58 +11,63 @@
         <import type="android.view.View" />
     </data>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="15dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/bookTitle"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{data.title}"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:transitionName="bookTitle"
-            android:visibility="@{safeUnbox(data.isTitleValid())? View.VISIBLE : View.GONE}"
-            tools:targetApi="lollipop" />
+            android:layout_margin="15dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/bookAuthor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{data.author}"
-            android:textSize="18sp"
-            android:visibility="@{ safeUnbox(data.isAuthorValid())? View.VISIBLE : View.GONE}" />
+            <TextView
+                android:id="@+id/bookTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{data.title}"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:transitionName="bookTitle"
+                android:visibility="@{safeUnbox(data.isTitleValid())? View.VISIBLE : View.GONE}"
+                tools:targetApi="lollipop" />
 
-        <TextView
-            android:id="@+id/bookPublisher"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{data.publisher}"
-            android:visibility="@{ safeUnbox(data.isPublisherValid())? View.VISIBLE : View.GONE}" />
+            <TextView
+                android:id="@+id/bookAuthor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{data.author}"
+                android:textSize="18sp"
+                android:visibility="@{ safeUnbox(data.isAuthorValid())? View.VISIBLE : View.GONE}" />
 
-        <TextView
-            android:id="@+id/bookCategories"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{@string/book_tag + ' ' + data.categories}"
-            android:visibility="@{ safeUnbox(data.isCategoriesValid())? View.VISIBLE : View.GONE}" />
+            <TextView
+                android:id="@+id/bookPublisher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{data.publisher}"
+                android:visibility="@{ safeUnbox(data.isPublisherValid())? View.VISIBLE : View.GONE}" />
 
-        <TextView
-            android:id="@+id/bookLastCheckedOut"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="@{ safeUnbox(data.isCheckedOutAndCheckedOutByValid())? View.GONE : View.VISIBLE}" />
+            <TextView
+                android:id="@+id/bookCategories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/book_tag + ' ' + data.categories}"
+                android:visibility="@{ safeUnbox(data.isCategoriesValid())? View.VISIBLE : View.GONE}" />
 
-        <Button
-            android:id="@+id/bookCheckoutButton"
-            android:layout_width="300dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:text="@string/book_checkout" />
+            <TextView
+                android:id="@+id/bookLastCheckedOut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="@{ safeUnbox(data.isCheckedOutAndCheckedOutByValid())? View.GONE : View.VISIBLE}" />
 
-    </LinearLayout>
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/bookCheckoutButton"
+                android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:text="@string/book_checkout" />
+
+        </LinearLayout>
+    </ScrollView>
 </layout>
