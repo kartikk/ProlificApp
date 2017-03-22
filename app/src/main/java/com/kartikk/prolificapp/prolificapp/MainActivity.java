@@ -2,6 +2,7 @@ package com.kartikk.prolificapp.prolificapp;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import com.kartikk.prolificapp.prolificapp.models.Book;
 import com.kartikk.prolificapp.prolificapp.util.Helper;
 
 import io.fabric.sdk.android.Fabric;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -58,11 +60,17 @@ public class MainActivity extends AppCompatActivity {
                 call.enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
-                        Log.d(TAG, "Delete all books success, message: " + response.message());
+                        Log.d(TAG, "Delete all books success, response: " + response.body());
+                        if (activityMainBinding != null) {
+                            Snackbar.make(activityMainBinding.mainActivityLinearLayout, R.string.delete_all_success, Snackbar.LENGTH_LONG).show();
+                        }
                     }
 
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) {
+                        if (activityMainBinding != null) {
+                            Snackbar.make(activityMainBinding.mainActivityLinearLayout, R.string.delete_all_fail, Snackbar.LENGTH_LONG).show();
+                        }
                         Log.d(TAG, "Delete all books failed, message: " + t.getMessage());
                     }
                 });
@@ -77,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Call<List<Book>> call = Helper.getRetrofitEndpoints().getBooks();
-        // TODO handle network issues better
         call.enqueue(new Callback<List<Book>>() {
             @Override
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
@@ -97,6 +104,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<Book>> call, Throwable t) {
                 Log.d(TAG, "Get books failed, message: " + t.getMessage());
+                if (activityMainBinding != null) {
+                    Snackbar.make(activityMainBinding.mainActivityLinearLayout, R.string.main_recycler_fail, Snackbar.LENGTH_LONG).show();
+                }
             }
         });
     }

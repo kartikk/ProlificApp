@@ -24,4 +24,11 @@
     <string name="main_context_title">Action</string>
     <string name="checkout_success">Checkout success</string>
     <string name="checkout_failed">Checkout failed</string>
+    <string name="add_book_success">Book added successfully</string>
+    <string name="add_book_fail">Unable to add book</string>
+    <string name="main_recycler_fail">Unable to connect</string>
+    <string name="delete_all_success">All books deleted</string>
+    <string name="delete_all_fail">Unable to delete books</string>
+    <string name="delete_book_success">Book deleted</string>
+    <string name="delete_book_failed">Unable to delete book</string>
 </resources>

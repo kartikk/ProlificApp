@@ -6,15 +6,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.kartikk.prolificapp.prolificapp.databinding.CardBookBinding;
 import com.kartikk.prolificapp.prolificapp.models.Book;
@@ -90,12 +89,14 @@ public class BooksRecyclerAdapter extends RecyclerView.Adapter<BooksRecyclerAdap
                             call.enqueue(new Callback<Void>() {
                                 @Override
                                 public void onResponse(Call<Void> call, Response<Void> response) {
-                                    Log.d(TAG, "Book deletion success, message: "+ response.message());
+                                    Log.d(TAG, "Book deletion success, response: " + response.body());
+                                    Toast.makeText(context, R.string.delete_book_success, Toast.LENGTH_LONG).show();
                                 }
 
                                 @Override
                                 public void onFailure(Call<Void> call, Throwable t) {
                                     Log.d(TAG, "Book deletion failed, message: " + t.getMessage());
+                                    Toast.makeText(context, R.string.delete_book_failed, Toast.LENGTH_LONG).show();
                                 }
                             });
                         }

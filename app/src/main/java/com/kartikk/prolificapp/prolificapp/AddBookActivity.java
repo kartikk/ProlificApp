@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.kartikk.prolificapp.prolificapp.databinding.ActivityAddBookBinding;
 import com.kartikk.prolificapp.prolificapp.models.UpdateBook;
@@ -49,7 +50,6 @@ public class AddBookActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 updateBook();
-                finish();
             }
         });
         titleTextInputLayout = activityAddBookBinding.titleEditTextLayout;
@@ -199,7 +199,6 @@ public class AddBookActivity extends AppCompatActivity {
             case R.id.menu_done:
                 if (titleValid && authorValid && publisherValid && categoriesValid) {
                     updateBook();
-                    finish();
                     return true;
                 }
                 if (titleTextInputLayout != null && !titleValid) {
@@ -246,16 +245,17 @@ public class AddBookActivity extends AppCompatActivity {
     private void updateBook() {
         UpdateBook updateBook = new UpdateBook(titleText, authorText, publisherText, categoriesText);
         Call<Void> call = Helper.getRetrofitEndpoints().postBook(updateBook);
-        // TODO handle network issues better
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
+                Toast.makeText(getApplicationContext(), R.string.add_book_success, Toast.LENGTH_LONG).show();
                 Log.d(TAG, "Update success, response: " + response.body());
+                finish();
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-
+                Toast.makeText(getApplicationContext(), R.string.add_book_fail, Toast.LENGTH_LONG).show();
                 Log.d(TAG, "Update failed, message: " + t.getMessage());
             }
         });
