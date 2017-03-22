@@ -2,12 +2,15 @@ package com.kartikk.prolificapp.prolificapp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +18,14 @@ import android.view.ViewGroup;
 
 import com.kartikk.prolificapp.prolificapp.databinding.CardBookBinding;
 import com.kartikk.prolificapp.prolificapp.models.Book;
+import com.kartikk.prolificapp.prolificapp.util.Helper;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Kartikk on 3/21/2017.
@@ -64,17 +72,50 @@ public class BooksRecyclerAdapter extends RecyclerView.Adapter<BooksRecyclerAdap
                 }
             }
         });
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+                //TODO switch to Contextual action menu
+                final CharSequence[] items = {context.getString(R.string.main_context_delete)};
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+                builder.setTitle(context.getString(R.string.main_context_title));
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        if (item == 0) {
+                            Call<Void> call = Helper.getRetrofitEndpoints().deleteBook(bookList.get(holder.getAdapterPosition()).getId());
+                            call.enqueue(new Callback<Void>() {
+                                @Override
+                                public void onResponse(Call<Void> call, Response<Void> response) {
+                                    Log.d(TAG, "Book deletion success");
+                                }
+
+                                @Override
+                                public void onFailure(Call<Void> call, Throwable t) {
+                                    Log.d(TAG, "Book deletion failed, message: " + t.getMessage());
+                                }
+                            });
+                        }
+                    }
+                });
+                builder.show();
+                return true;
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        if(bookList!=null)
-        return bookList.size();
+        if (bookList != null)
+            return bookList.size();
         else
             return 0;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private ViewHolder(View itemView) {
             super(itemView);

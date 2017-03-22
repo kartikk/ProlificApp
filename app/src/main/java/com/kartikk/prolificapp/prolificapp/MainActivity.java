@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     public final static String LIST_STATE_KEY = "recycler_list_state";
     Parcelable listState;
 
+    // TODO try to refresh recyclerview when needed
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);

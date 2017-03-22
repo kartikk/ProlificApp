@@ -19,4 +19,6 @@
     <string name="submit_button_text">Submit</string>
     <string name="menu_share">Share</string>
     <string name="menu_done">Done</string>
+    <string name="main_context_delete">Delete</string>
+    <string name="main_context_title">Action</string>
 </resources>
