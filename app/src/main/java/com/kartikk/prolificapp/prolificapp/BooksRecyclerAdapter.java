@@ -1,8 +1,14 @@
 package com.kartikk.prolificapp.prolificapp;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +25,7 @@ import java.util.List;
 
 public class BooksRecyclerAdapter extends RecyclerView.Adapter<BooksRecyclerAdapter.ViewHolder> {
 
-    List<Book> bookList;
+    private List<Book> bookList;
     static String TAG = BooksRecyclerAdapter.class.getSimpleName();
 
     public void setBookList(List<Book> bookList) {
@@ -39,14 +45,23 @@ public class BooksRecyclerAdapter extends RecyclerView.Adapter<BooksRecyclerAdap
     }
 
     @Override
-    public void onBindViewHolder(BooksRecyclerAdapter.ViewHolder holder, int position) {
-        CardBookBinding cardBookBinding = DataBindingUtil.findBinding(holder.itemView);
+    public void onBindViewHolder(final BooksRecyclerAdapter.ViewHolder holder, int position) {
+        final Context context = holder.itemView.getContext();
+        final CardBookBinding cardBookBinding = DataBindingUtil.findBinding(holder.itemView);
         cardBookBinding.setResult(bookList.get(position));
         cardBookBinding.executePendingBindings();
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent bookDetailIntent = new Intent(context, BookDetailActivity.class);
+                bookDetailIntent.putExtra("book", bookList.get(holder.getAdapterPosition()));
+                android.support.v4.util.Pair<View, String> p1 = android.support.v4.util.Pair.create((View) cardBookBinding.bookCardTitleTextView, "bookTitle");
+                ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, p1);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    context.startActivity(bookDetailIntent, activityOptionsCompat.toBundle());
+                } else {
+                    context.startActivity(bookDetailIntent);
+                }
             }
         });
     }
@@ -61,7 +76,7 @@ public class BooksRecyclerAdapter extends RecyclerView.Adapter<BooksRecyclerAdap
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        public ViewHolder(View itemView) {
+        private ViewHolder(View itemView) {
             super(itemView);
         }
     }

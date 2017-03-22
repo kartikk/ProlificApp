@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.kartikk.prolificapp.prolificapp.models.Book" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/bookTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{data.title}"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:transitionName="bookTitle"
+            tools:targetApi="lollipop" />
+
+        <TextView
+            android:id="@+id/bookAuthor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{data.author}"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/bookPublisher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{data.publisher}"
+            android:visibility="@{data.isPublisherValid()? View.VISIBLE : View.GONE}" />
+
+        <TextView
+            android:id="@+id/bookCategories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/book_tag + ' ' + data.categories}" />
+
+        <TextView
+            android:id="@+id/bookLastCheckedOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/book_checked_out + ' ' + data.lastCheckedOutBy + ' '+ '@' + ' ' + data.lastCheckedOut}"
+            android:visibility="@{ data.isCheckedOutValid()? View.GONE : View.VISIBLE}" />
+
+        <Button
+            android:id="@+id/bookCheckoutButton"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:text="@string/book_checkout" />
+
+    </LinearLayout>
+</layout>

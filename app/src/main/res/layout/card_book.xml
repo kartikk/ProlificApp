@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -33,7 +34,9 @@
                 android:maxLines="1"
                 android:text="@{result.title}"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:transitionName="bookTitle"
+                tools:targetApi="lollipop" />
 
             <TextView
                 android:id="@+id/bookCardAuthorTextView"
