@@ -2,6 +2,7 @@ package com.kartikk.prolificapp.prolificapp;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,7 +27,11 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding activityMainBinding;
     RecyclerView recyclerView;
     BooksRecyclerAdapter booksRecyclerAdapter;
+    LinearLayoutManager linearLayoutManager;
     static final String TAG = MainActivity.class.getSimpleName();
+
+    public final static String LIST_STATE_KEY = "recycler_list_state";
+    Parcelable listState;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -46,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
                 booksRecyclerAdapter = new BooksRecyclerAdapter(response.body());
                 recyclerView.setAdapter(booksRecyclerAdapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+                recyclerView.setLayoutManager(linearLayoutManager);
                 recyclerView.setVisibility(View.VISIBLE);
                 Log.d(TAG, "Get books success" + response.body());
             }
@@ -69,5 +75,29 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (linearLayoutManager != null) {
+            listState = linearLayoutManager.onSaveInstanceState();
+            outState.putParcelable(LIST_STATE_KEY, listState);
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null)
+            listState = savedInstanceState.getParcelable(LIST_STATE_KEY);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (linearLayoutManager != null && listState != null) {
+            linearLayoutManager.onRestoreInstanceState(listState);
+        }
     }
 }
