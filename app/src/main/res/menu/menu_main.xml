@@ -5,6 +5,12 @@
         android:id="@+id/menu_add"
         android:title="@string/menu_main_add"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_delete_all"
+        android:title="@string/menu_main_delete_all"
+        app:showAsAction="never" />
+
     <item
         android:id="@+id/menu_seed"
         android:title="@string/menu_main_seed"

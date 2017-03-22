@@ -24,10 +24,10 @@ public interface Endpoints {
     @POST(Constants.urlPart1 + "/books")
     Call<Void> postBook(@Body UpdateBook updateBook);
 
-    @DELETE(Constants.urlPart1 + "/books/{id}")
+    @DELETE(Constants.urlPart1 + "/books/{id}/")
     Call<Void> deleteBook(@Path("id") String id);
 
-    @DELETE(Constants.urlPart1 + "/clean")
+    @DELETE(Constants.urlPart1 + "/clean/")
     Call<Void> deleteAllBooks();
 
 }

@@ -4,6 +4,7 @@
     <string name="book_checked_out">Last Checked Out:</string>
     <string name="book_checkout">Checkout</string>
     <string name="menu_main_add">Add</string>
+    <string name="menu_main_delete_all">Delete all books</string>
     <string name="menu_main_seed">Seed</string>
     <string name="main_activity_title">Books</string>
     <string name="detail_activity_title">Detail</string>

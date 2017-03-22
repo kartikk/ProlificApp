@@ -90,7 +90,7 @@ public class BooksRecyclerAdapter extends RecyclerView.Adapter<BooksRecyclerAdap
                             call.enqueue(new Callback<Void>() {
                                 @Override
                                 public void onResponse(Call<Void> call, Response<Void> response) {
-                                    Log.d(TAG, "Book deletion success");
+                                    Log.d(TAG, "Book deletion success, message: "+ response.message());
                                 }
 
                                 @Override

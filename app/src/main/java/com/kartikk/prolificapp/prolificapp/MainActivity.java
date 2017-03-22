@@ -73,6 +73,20 @@ public class MainActivity extends AppCompatActivity {
                 Intent addIntent = new Intent(this, AddBookActivity.class);
                 startActivity(addIntent);
                 return true;
+            case R.id.menu_delete_all:
+                Call<Void> call = Helper.getRetrofitEndpoints().deleteAllBooks();
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        Log.d(TAG, "Delete all books success, message: "+ response.message());
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Log.d(TAG, "Delete all books failed, message: " + t.getMessage());
+                    }
+                });
+                return true;
             case R.id.menu_seed:
                 return true;
         }
