@@ -60,9 +60,16 @@ public class MainActivity extends AppCompatActivity {
                 call.enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
-                        Log.d(TAG, "Delete all books success, response: " + response.body());
-                        if (activityMainBinding != null) {
-                            Snackbar.make(activityMainBinding.mainActivityLinearLayout, R.string.delete_all_success, Snackbar.LENGTH_LONG).show();
+                        if (response.isSuccessful() && response.code() == 200) {
+                            Log.d(TAG, "Delete all books success, response: " + response.body());
+                            if (activityMainBinding != null) {
+                                Snackbar.make(activityMainBinding.mainActivityLinearLayout, R.string.delete_all_success, Snackbar.LENGTH_LONG).show();
+                            }
+                        } else {
+                            if (activityMainBinding != null) {
+                                Snackbar.make(activityMainBinding.mainActivityLinearLayout, R.string.delete_all_fail, Snackbar.LENGTH_LONG).show();
+                            }
+                            Log.d(TAG, "Incorrect response for delete all, response: " + response);
                         }
                     }
 
@@ -88,17 +95,24 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<Book>>() {
             @Override
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
-                if (booksRecyclerAdapter == null) {
-                    booksRecyclerAdapter = new BooksRecyclerAdapter(response.body());
-                    recyclerView.setAdapter(booksRecyclerAdapter);
+                if (response.isSuccessful() && response.code() == 200) {
+                    if (booksRecyclerAdapter == null) {
+                        booksRecyclerAdapter = new BooksRecyclerAdapter(response.body());
+                        recyclerView.setAdapter(booksRecyclerAdapter);
+                    } else {
+                        booksRecyclerAdapter.setBookList(response.body());
+                        booksRecyclerAdapter.notifyDataSetChanged();
+                    }
+                    linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+                    recyclerView.setLayoutManager(linearLayoutManager);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    Log.d(TAG, "Get books success, response: " + response.body());
                 } else {
-                    booksRecyclerAdapter.setBookList(response.body());
-                    booksRecyclerAdapter.notifyDataSetChanged();
+                    if (activityMainBinding != null) {
+                        Snackbar.make(activityMainBinding.mainActivityLinearLayout, R.string.main_recycler_fail, Snackbar.LENGTH_LONG).show();
+                    }
+                    Log.d(TAG, "Incorrect response for get books, response: " + response);
                 }
-                linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-                recyclerView.setLayoutManager(linearLayoutManager);
-                recyclerView.setVisibility(View.VISIBLE);
-                Log.d(TAG, "Get books success, response: " + response.body());
             }
 
             @Override

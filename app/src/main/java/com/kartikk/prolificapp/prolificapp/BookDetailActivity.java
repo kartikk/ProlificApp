@@ -57,9 +57,14 @@ public class BookDetailActivity extends AppCompatActivity {
                 call.enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
-                        Log.d(TAG, "Checkout success, response: " + response);
-                        Toast.makeText(getApplicationContext(), getString(R.string.checkout_success), Toast.LENGTH_LONG).show();
-                        finish();
+                        if (response.isSuccessful() && response.code() == 200) {
+                            Log.d(TAG, "Checkout success, response: " + response);
+                            Toast.makeText(getApplicationContext(), getString(R.string.checkout_success), Toast.LENGTH_LONG).show();
+                            finish();
+                        } else {
+                            Log.d(TAG, "Invalid response for checkout, response: " + response);
+                            Toast.makeText(getApplicationContext(), getString(R.string.checkout_failed), Toast.LENGTH_LONG).show();
+                        }
                     }
 
                     @Override

@@ -89,8 +89,13 @@ public class BooksRecyclerAdapter extends RecyclerView.Adapter<BooksRecyclerAdap
                             call.enqueue(new Callback<Void>() {
                                 @Override
                                 public void onResponse(Call<Void> call, Response<Void> response) {
-                                    Log.d(TAG, "Book deletion success, response: " + response.body());
-                                    Toast.makeText(context, R.string.delete_book_success, Toast.LENGTH_LONG).show();
+                                    if (response.isSuccessful() && response.code() == 204) {
+                                        Log.d(TAG, "Book deletion success, response: " + response.body());
+                                        Toast.makeText(context, R.string.delete_book_success, Toast.LENGTH_LONG).show();
+                                    } else {
+                                        Log.d(TAG, "Invalid response for delete book, response: " + response);
+                                        Toast.makeText(context, R.string.delete_book_failed, Toast.LENGTH_LONG).show();
+                                    }
                                 }
 
                                 @Override

@@ -248,9 +248,14 @@ public class AddBookActivity extends AppCompatActivity {
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                Toast.makeText(getApplicationContext(), R.string.add_book_success, Toast.LENGTH_LONG).show();
-                Log.d(TAG, "Update success, response: " + response.body());
-                finish();
+                if (response.isSuccessful() && response.code() == 200) {
+                    Toast.makeText(getApplicationContext(), R.string.add_book_success, Toast.LENGTH_LONG).show();
+                    Log.d(TAG, "Update success, response: " + response.body());
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.add_book_fail, Toast.LENGTH_LONG).show();
+                    Log.d(TAG, "Invalid response for add book, response: " + response);
+                }
             }
 
             @Override
