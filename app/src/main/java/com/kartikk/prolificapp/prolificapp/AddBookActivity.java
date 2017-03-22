@@ -37,8 +37,6 @@ public class AddBookActivity extends AppCompatActivity {
     // set to true when config is changed, used to prevent error message from showing on config change
     Boolean titleConfigChange = true, authorConfigChange = true, publisherConfigChange = true, categoriesConfigChange = true;
 
-    // TODO test on low dpi
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
