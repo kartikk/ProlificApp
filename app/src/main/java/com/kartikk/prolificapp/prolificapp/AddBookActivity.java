@@ -7,11 +7,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.kartikk.prolificapp.prolificapp.databinding.ActivityAddBookBinding;
+import com.kartikk.prolificapp.prolificapp.models.UpdateBook;
+import com.kartikk.prolificapp.prolificapp.util.Helper;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Kartikk on 3/21/2017.
@@ -24,6 +31,8 @@ public class AddBookActivity extends AppCompatActivity {
     AppCompatButton submitButton;
     Boolean titleValid = false, authorValid = false, publisherValid = false, categoriesValid = false;
     String titleText, authorText, publisherText, categoriesText;
+
+    static final String TAG = AddBookActivity.class.getSimpleName();
 
     // set to true when config is changed, used to prevent error message from showing on config change
     Boolean titleConfigChange = true, authorConfigChange = true, publisherConfigChange = true, categoriesConfigChange = true;
@@ -41,7 +50,8 @@ public class AddBookActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                updateBook();
+                finish();
             }
         });
         titleTextInputLayout = activityAddBookBinding.titleEditTextLayout;
@@ -89,7 +99,7 @@ public class AddBookActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 if (editable.toString().trim().length() == 0) {
-                    if(!authorConfigChange) {
+                    if (!authorConfigChange) {
                         authorTextInputLayout.setError(getString(R.string.author_error));
                         authorTextInputLayout.setErrorEnabled(true);
                     }
@@ -119,7 +129,7 @@ public class AddBookActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 if (editable.toString().trim().length() == 0) {
-                    if(!publisherConfigChange) {
+                    if (!publisherConfigChange) {
                         publisherTextInputLayout.setError(getString(R.string.publisher_error));
                         publisherTextInputLayout.setErrorEnabled(true);
                     }
@@ -149,7 +159,7 @@ public class AddBookActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 if (editable.toString().trim().length() == 0) {
-                    if(!categoriesConfigChange) {
+                    if (!categoriesConfigChange) {
                         categoriesTextInputLayout.setError(getString(R.string.categories_error));
                         categoriesTextInputLayout.setErrorEnabled(true);
                     }
@@ -190,7 +200,7 @@ public class AddBookActivity extends AppCompatActivity {
                 return true;
             case R.id.menu_done:
                 if (titleValid && authorValid && publisherValid && categoriesValid) {
-
+                    updateBook();
                     finish();
                     return true;
                 }
@@ -233,5 +243,23 @@ public class AddBookActivity extends AppCompatActivity {
             categoriesConfigChange = true;
             categoriesTextInputLayout.getEditText().setText(categoriesText);
         }
+    }
+
+    private void updateBook() {
+        UpdateBook updateBook = new UpdateBook(titleText, authorText, publisherText, categoriesText);
+        Call<Void> call = Helper.getRetrofitEndpoints().postBook(updateBook);
+        // TODO handle network issues better
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Log.d(TAG, "Update success, response: " + response.body());
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+                Log.d(TAG, "Update failed, message: " + t.getMessage());
+            }
+        });
     }
 }
