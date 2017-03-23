@@ -26,6 +26,7 @@ import com.facebook.rebound.SpringConfig;
 import com.facebook.rebound.SpringSystem;
 import com.kartikk.prolificapp.prolificapp.databinding.ActivityMainBinding;
 import com.kartikk.prolificapp.prolificapp.models.Book;
+import com.kartikk.prolificapp.prolificapp.models.UpdateBook;
 import com.kartikk.prolificapp.prolificapp.util.Helper;
 
 import io.fabric.sdk.android.Fabric;
@@ -121,9 +122,75 @@ public class MainActivity extends AppCompatActivity {
                 builder.show();
                 return false;
             case R.id.menu_seed:
+                seedData();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void seedData() {
+        UpdateBook book1 = new UpdateBook("User Interface Development: Beginner's Guide", "Jason Morris", "O'Reilly Media", "interface, ui, android");
+        Call<Void> call = Helper.getRetrofitEndpoints().postBook(book1);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful() && response.code() == 200) {
+                    UpdateBook book2 = new UpdateBook("Programming Android", "Zigurd Mednieks, Laird Dornin, G. Blake Meike, Masumi Nakamura", "O'Reilly Media", "android");
+                    Call<Void> call1 = Helper.getRetrofitEndpoints().postBook(book2);
+                    call1.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if (response.isSuccessful() && response.code() == 200) {
+                                UpdateBook book3 = new UpdateBook("Android 4 Application Development", "Reto Meier", "Wrox", "android,professional");
+                                Call<Void> call2 = Helper.getRetrofitEndpoints().postBook(book3);
+                                call2.enqueue(new Callback<Void>() {
+                                    @Override
+                                    public void onResponse(Call<Void> call, Response<Void> response) {
+                                        if (response.isSuccessful() && response.code() == 200) {
+                                            UpdateBook book4 = new UpdateBook("iOS Programming: The Big Nerd Ranch Guide", "Joe Conway and Aaron Hillegass", "Big Nerd Ranch", "big nerd ranch, ios");
+                                            Call<Void> call3 = Helper.getRetrofitEndpoints().postBook(book4);
+                                            call3.enqueue(new Callback<Void>() {
+                                                @Override
+                                                public void onResponse(Call<Void> call, Response<Void> response) {
+                                                    if (response.isSuccessful() && response.code() == 200) {
+                                                        Snackbar.make(activityMainBinding.mainActivityLinearLayout, R.string.seed_success, Snackbar.LENGTH_LONG).show();
+                                                        updateRecyclerView();
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onFailure(Call<Void> call, Throwable t) {
+                                                    Snackbar.make(activityMainBinding.mainActivityLinearLayout, R.string.seed_failed, Snackbar.LENGTH_LONG).show();
+                                                    Log.d(TAG, "Seed failed, message: " + t.getMessage());
+                                                }
+                                            });
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Void> call, Throwable t) {
+                                        Snackbar.make(activityMainBinding.mainActivityLinearLayout, R.string.seed_failed, Snackbar.LENGTH_LONG).show();
+                                        Log.d(TAG, "Seed failed, message: " + t.getMessage());
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Snackbar.make(activityMainBinding.mainActivityLinearLayout, R.string.seed_failed, Snackbar.LENGTH_LONG).show();
+                            Log.d(TAG, "Seed failed, message: " + t.getMessage());
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Snackbar.make(activityMainBinding.mainActivityLinearLayout, R.string.seed_failed, Snackbar.LENGTH_LONG).show();
+                Log.d(TAG, "Seed failed, message: " + t.getMessage());
+            }
+        });
     }
 
     private void showSortDialog() {

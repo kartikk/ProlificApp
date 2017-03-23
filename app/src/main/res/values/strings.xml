@@ -43,4 +43,6 @@
     <string name="dialog_asc">Ascending</string>
     <string name="dialog_desc">Descending</string>
     <string name="dialog_sort_positive">Sort</string>
+    <string name="seed_success">Seed success</string>
+    <string name="seed_failed">Seeding failed</string>
 </resources>
