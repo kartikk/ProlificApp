@@ -20,6 +20,8 @@ import com.kartikk.prolificapp.prolificapp.models.Book;
 import com.kartikk.prolificapp.prolificapp.util.Helper;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -32,17 +34,43 @@ import retrofit2.Response;
 
 public class BooksRecyclerAdapter extends RecyclerView.Adapter<BooksRecyclerAdapter.ViewHolder> {
 
-    private List<Book> bookList;
+    private List<Book> bookList = new ArrayList<>();
     static String TAG = BooksRecyclerAdapter.class.getSimpleName();
     Context parentContext;
+    public static final int ID_ASC = 0, TITLE_ASC = 1, AUTHOR_ASC = 2, ID_DESC = 3, TITLE_DESC = 4, AUTHOR_DESC = 5;
 
-    public void setBookList(List<Book> bookList) {
-        this.bookList = new ArrayList<>(bookList);
+    public void setBookList(List<Book> bookList, int sortMethodFlag) {
+        this.bookList = bookList;
+        changeSorting(sortMethodFlag);
     }
 
-    public BooksRecyclerAdapter(List<Book> bookList, Context context) {
+    public void changeSorting(final int sortMethodFlag) {
+        Collections.sort(bookList, new Comparator<Book>() {
+            @Override
+            public int compare(Book book, Book t1) {
+                if (sortMethodFlag == ID_ASC) {
+                    return book.getId() - t1.getId();
+                } else if (sortMethodFlag == ID_DESC) {
+                    return t1.getId() - book.getId();
+                } else if (sortMethodFlag == TITLE_DESC) {
+                    return t1.getTitle().compareToIgnoreCase(book.getTitle());
+                } else if (sortMethodFlag == TITLE_ASC) {
+                    return book.getTitle().compareToIgnoreCase(t1.getTitle());
+                } else if (sortMethodFlag == AUTHOR_DESC) {
+                    return t1.getAuthor().compareToIgnoreCase(book.getAuthor());
+                } else if (sortMethodFlag == AUTHOR_ASC) {
+                    return book.getAuthor().compareToIgnoreCase(t1.getAuthor());
+                }
+                return 0;
+            }
+        });
+        notifyDataSetChanged();
+    }
+
+    public BooksRecyclerAdapter(List<Book> bookList, Context context, int sortMethodFlag) {
         this.bookList = new ArrayList<>(bookList);
         parentContext = context;
+        changeSorting(sortMethodFlag);
     }
 
     @Override

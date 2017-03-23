@@ -5,6 +5,7 @@
     <string name="book_checkout">Checkout</string>
     <string name="menu_main_add">Add</string>
     <string name="menu_main_delete_all">Delete all books</string>
+    <string name="menu_main_sort_by">Sort by</string>
     <string name="menu_main_seed">Seed</string>
     <string name="main_activity_title">Books</string>
     <string name="detail_activity_title">Detail</string>
@@ -34,4 +35,12 @@
     <string name="delete_all_title">Delete all books?</string>
     <string name="delete_all_confirm_alert">Delete</string>
     <string name="delete_all_cancel_alert">Cancel</string>
+    <string name="dialog_sort_title">Sort</string>
+    <string name="dialog_sort_by">Sort by:</string>
+    <string name="dialog_title">Title</string>
+    <string name="dialog_author">Author</string>
+    <string name="dialog_order_by">Order by:</string>
+    <string name="dialog_asc">Ascending</string>
+    <string name="dialog_desc">Descending</string>
+    <string name="dialog_sort_positive">Sort</string>
 </resources>

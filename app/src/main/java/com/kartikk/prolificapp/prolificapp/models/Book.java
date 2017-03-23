@@ -12,7 +12,7 @@ import java.util.Date;
 
 public class Book implements Parcelable {
 
-    private String id;
+    private int id;
     private String author;
     private String title;
     private Date lastCheckedOut;
@@ -29,11 +29,11 @@ public class Book implements Parcelable {
         this.publisher = publisher;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -106,7 +106,7 @@ public class Book implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(id);
+        parcel.writeInt(id);
         parcel.writeString(author);
         parcel.writeString(title);
         parcel.writeValue(lastCheckedOut);
@@ -117,7 +117,7 @@ public class Book implements Parcelable {
     }
 
     public Book(Parcel in) {
-        id = in.readString();
+        id = in.readInt();
         author = in.readString();
         title = in.readString();
         lastCheckedOut = (Date) in.readValue(Date.class.getClassLoader());
@@ -125,10 +125,6 @@ public class Book implements Parcelable {
         categories = in.readString();
         url = in.readString();
         publisher = in.readString();
-    }
-
-    public Boolean isIDValid() {
-        return id != null;
     }
 
     public Boolean isCheckedOutByValid() {

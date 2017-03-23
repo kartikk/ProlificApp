@@ -12,10 +12,12 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.RadioButton;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.rebound.SimpleSpringListener;
@@ -43,6 +45,11 @@ public class MainActivity extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager;
     static final String TAG = MainActivity.class.getSimpleName();
     Context context;
+
+    Boolean sortTitle = true, sortAuthor = false, sortAsc = true, sortDesc = false;
+    int sortMethodCode = BooksRecyclerAdapter.ID_ASC;
+
+    RadioButton titleRadioButton, authorRadioButton, ascRadio, descRadio;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -92,6 +99,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.menu_sort:
+                showSortDialog();
+                return true;
             case R.id.menu_delete_all:
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle(getString(R.string.delete_all_title));
@@ -109,11 +119,49 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 builder.show();
-                return true;
+                return false;
             case R.id.menu_seed:
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showSortDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_sort, null);
+        titleRadioButton = (RadioButton) dialogView.findViewById(R.id.dialogSortTitleRadioButton);
+        authorRadioButton = (RadioButton) dialogView.findViewById(R.id.dialogSortAuthorRadioButton);
+        ascRadio = (RadioButton) dialogView.findViewById(R.id.dialogAscRadioButton);
+        descRadio = (RadioButton) dialogView.findViewById(R.id.dialogDecRadioButton);
+        titleRadioButton.setChecked(sortTitle);
+        authorRadioButton.setChecked(sortAuthor);
+        ascRadio.setChecked(sortAsc);
+        descRadio.setChecked(sortDesc);
+        builder.setView(dialogView).setPositiveButton(getString(R.string.dialog_sort_positive), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                sortAuthor = authorRadioButton.isChecked();
+                sortTitle = titleRadioButton.isChecked();
+                sortAsc = ascRadio.isChecked();
+                sortDesc = descRadio.isChecked();
+                if (sortTitle) {
+                    if (sortAsc) {
+                        sortMethodCode = BooksRecyclerAdapter.TITLE_ASC;
+                    } else if (sortDesc) {
+                        sortMethodCode = BooksRecyclerAdapter.TITLE_DESC;
+                    }
+                } else if (sortAuthor) {
+                    if (sortAsc) {
+                        sortMethodCode = BooksRecyclerAdapter.AUTHOR_ASC;
+                    } else if (sortDesc) {
+                        sortMethodCode = BooksRecyclerAdapter.AUTHOR_DESC;
+                    }
+                }
+                booksRecyclerAdapter.changeSorting(sortMethodCode);
+            }
+        });
+        builder.create().show();
     }
 
     private void deleteAllBooks() {
@@ -127,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
                         Snackbar.make(activityMainBinding.mainActivityLinearLayout, R.string.delete_all_success, Snackbar.LENGTH_LONG).show();
                     }
                     int count = booksRecyclerAdapter.getItemCount();
-                    booksRecyclerAdapter.setBookList(new ArrayList<Book>());
+                    booksRecyclerAdapter.setBookList(new ArrayList<Book>(), sortMethodCode);
                     booksRecyclerAdapter.notifyItemRangeRemoved(0, count);
 //                    updateRecyclerView();
                 } else {
@@ -155,10 +203,10 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
                 if (response.isSuccessful() && response.code() == 200) {
                     if (booksRecyclerAdapter == null) {
-                        booksRecyclerAdapter = new BooksRecyclerAdapter(response.body(), context);
+                        booksRecyclerAdapter = new BooksRecyclerAdapter(response.body(), context, sortMethodCode);
                         recyclerView.setAdapter(booksRecyclerAdapter);
                     } else {
-                        booksRecyclerAdapter.setBookList(response.body());
+                        booksRecyclerAdapter.setBookList(response.body(), sortMethodCode);
                         booksRecyclerAdapter.notifyDataSetChanged();
                     }
                     linearLayoutManager = new LinearLayoutManager(getApplicationContext());

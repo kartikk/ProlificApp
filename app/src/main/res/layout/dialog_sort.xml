@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/dialogSortTitleRelativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="@color/colorPrimary" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/dialog_sort_title"
+            android:textColor="@color/textWhite"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/dialogSortByTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dialogSortTitleRelativeLayout"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/dialog_sort_by" />
+
+    <RadioGroup
+        android:id="@+id/sortRadioGroup1"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dialogSortByTextView">
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/dialogSortTitleRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
+            android:text="@string/dialog_title"
+            app:buttonTint="@color/colorPrimary" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/dialogSortAuthorRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="73dp"
+            android:layout_marginLeft="73dp"
+            android:text="@string/dialog_author"
+            app:buttonTint="@color/colorPrimary" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/dialogOrderTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sortRadioGroup1"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/dialog_order_by" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/dialogOrderTextView">
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/dialogAscRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_asc"
+            app:buttonTint="@color/colorPrimary" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/dialogDecRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:layout_marginStart="35dp"
+            android:text="@string/dialog_desc"
+            app:buttonTint="@color/colorPrimary" />
+    </RadioGroup>
+
+</RelativeLayout>

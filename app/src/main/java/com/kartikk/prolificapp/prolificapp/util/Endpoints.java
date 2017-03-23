@@ -27,10 +27,10 @@ public interface Endpoints {
     Call<Void> postBook(@Body UpdateBook updateBook);
 
     @PUT(Constants.urlPart1 + "/books/{id}/")
-    Call<Void> checkoutBook(@Path("id") String id, @Body Checkout checkout);
+    Call<Void> checkoutBook(@Path("id") int id, @Body Checkout checkout);
 
     @DELETE(Constants.urlPart1 + "/books/{id}/")
-    Call<Void> deleteBook(@Path("id") String id);
+    Call<Void> deleteBook(@Path("id") int id);
 
     @DELETE(Constants.urlPart1 + "/clean/")
     Call<Void> deleteAllBooks();
