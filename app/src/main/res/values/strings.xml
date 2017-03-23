@@ -31,4 +31,7 @@
     <string name="delete_all_fail">Unable to delete books</string>
     <string name="delete_book_success">Book deleted</string>
     <string name="delete_book_failed">Unable to delete book</string>
+    <string name="delete_all_title">Delete all books?</string>
+    <string name="delete_all_confirm_alert">Delete</string>
+    <string name="delete_all_cancel_alert">Cancel</string>
 </resources>

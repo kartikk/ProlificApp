@@ -1,10 +1,12 @@
 package com.kartikk.prolificapp.prolificapp;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,6 +28,7 @@ import com.kartikk.prolificapp.prolificapp.util.Helper;
 
 import io.fabric.sdk.android.Fabric;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -90,37 +93,59 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_delete_all:
-                Call<Void> call = Helper.getRetrofitEndpoints().deleteAllBooks();
-                call.enqueue(new Callback<Void>() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle(getString(R.string.delete_all_title));
+                builder.setPositiveButton(getString(R.string.delete_all_confirm_alert), new DialogInterface.OnClickListener() {
                     @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        if (response.isSuccessful() && response.code() == 200) {
-                            Log.d(TAG, "Delete all books success, response: " + response.body());
-                            if (activityMainBinding != null) {
-                                Snackbar.make(activityMainBinding.mainActivityLinearLayout, R.string.delete_all_success, Snackbar.LENGTH_LONG).show();
-                            }
-                            updateRecyclerView();
-                        } else {
-                            if (activityMainBinding != null) {
-                                Snackbar.make(activityMainBinding.mainActivityLinearLayout, R.string.delete_all_fail, Snackbar.LENGTH_LONG).show();
-                            }
-                            Log.d(TAG, "Incorrect response for delete all, response: " + response);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-                        if (activityMainBinding != null) {
-                            Snackbar.make(activityMainBinding.mainActivityLinearLayout, R.string.delete_all_fail, Snackbar.LENGTH_LONG).show();
-                        }
-                        Log.d(TAG, "Delete all books failed, message: " + t.getMessage());
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        deleteAllBooks();
+                        dialogInterface.dismiss();
                     }
                 });
+                builder.setNegativeButton(getString(R.string.delete_all_cancel_alert), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                builder.show();
                 return true;
             case R.id.menu_seed:
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void deleteAllBooks() {
+        Call<Void> call = Helper.getRetrofitEndpoints().deleteAllBooks();
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful() && response.code() == 200) {
+                    Log.d(TAG, "Delete all books success, response: " + response.body());
+                    if (activityMainBinding != null) {
+                        Snackbar.make(activityMainBinding.mainActivityLinearLayout, R.string.delete_all_success, Snackbar.LENGTH_LONG).show();
+                    }
+                    int count = booksRecyclerAdapter.getItemCount();
+                    booksRecyclerAdapter.setBookList(new ArrayList<Book>());
+                    booksRecyclerAdapter.notifyItemRangeRemoved(0, count);
+//                    updateRecyclerView();
+                } else {
+                    if (activityMainBinding != null) {
+                        Snackbar.make(activityMainBinding.mainActivityLinearLayout, R.string.delete_all_fail, Snackbar.LENGTH_LONG).show();
+                    }
+                    Log.d(TAG, "Incorrect response for delete all, response: " + response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                if (activityMainBinding != null) {
+                    Snackbar.make(activityMainBinding.mainActivityLinearLayout, R.string.delete_all_fail, Snackbar.LENGTH_LONG).show();
+                }
+                Log.d(TAG, "Delete all books failed, message: " + t.getMessage());
+            }
+        });
     }
 
     public void updateRecyclerView() {

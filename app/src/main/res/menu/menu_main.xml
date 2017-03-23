@@ -5,7 +5,8 @@
     <item
         android:id="@+id/menu_delete_all"
         android:title="@string/menu_main_delete_all"
-        app:showAsAction="never" />
+        android:icon="@drawable/ic_delete_sweep_white_vector"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_seed"
