@@ -50,6 +50,7 @@ dependencies {
     compile "com.android.support:design:${supportLibVersion}"
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+    compile 'com.facebook.rebound:rebound:0.3.8'
     testCompile 'junit:junit:4.12'
     compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
         transitive = true;
