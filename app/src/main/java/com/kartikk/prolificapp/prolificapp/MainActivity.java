@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     BooksRecyclerAdapter booksRecyclerAdapter;
     LinearLayoutManager linearLayoutManager;
+    SwipeRefreshLayout swipeRefreshLayout;
     static final String TAG = MainActivity.class.getSimpleName();
     Context context;
 
@@ -93,6 +95,14 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                 }
                 return false;
+            }
+        });
+        swipeRefreshLayout = activityMainBinding.booksRecyclerSwipeLayout;
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                updateRecyclerView();
+                activityMainBinding.booksRecyclerSwipeLayout.setRefreshing(false);
             }
         });
     }
@@ -272,12 +282,14 @@ public class MainActivity extends AppCompatActivity {
                     if (booksRecyclerAdapter == null) {
                         booksRecyclerAdapter = new BooksRecyclerAdapter(response.body(), context, sortMethodCode);
                         recyclerView.setAdapter(booksRecyclerAdapter);
+
                     } else {
                         booksRecyclerAdapter.setBookList(response.body(), sortMethodCode);
                         booksRecyclerAdapter.notifyDataSetChanged();
                     }
                     linearLayoutManager = new LinearLayoutManager(getApplicationContext());
                     recyclerView.setLayoutManager(linearLayoutManager);
+                    swipeRefreshLayout.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.VISIBLE);
                     Log.d(TAG, "Get books success, response: " + response.body());
                 } else {
