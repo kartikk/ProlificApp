@@ -37,8 +37,8 @@
                 android:id="@+id/bookAuthor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:text="@{data.author}"
-                android:textSize="18sp"
                 android:visibility="@{ safeUnbox(data.isAuthorValid())? View.VISIBLE : View.GONE}" />
 
             <TextView
@@ -62,11 +62,13 @@
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/bookCheckoutButton"
-                android:layout_width="300dp"
-                android:layout_height="60dp"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:text="@string/book_checkout" />
+                android:layout_marginTop="20dp"
+                android:text="@string/book_checkout"
+                android:textColor="@color/textWhite"
+                android:theme="@style/CheckoutButton" />
 
         </LinearLayout>
     </ScrollView>
